@@ -24,11 +24,11 @@ const ExpenseSchema = mongoose.Schema({
 
 ExpenseSchema.methods.serialize = function() {
   return {
-    id: this._id,
     description: this.description || '',
     note: this.note || '',
     amount: this.amount || '',
-    createdAt: this.createdAt || ''
+    createdAt: this.createdAt || '',
+    id: this._id || ''
   };
 };
 

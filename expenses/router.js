@@ -14,6 +14,7 @@ router.use(jsonParser);
 
 //GET ALL EXPENSES
 router.get('/', jwtAuth, (req, res) => {
+  console.log(req.params);
   return Expense.find() 
     .then(expenses => res.status(200).json(expenses.map(expense => expense.serialize())))
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
@@ -49,7 +50,7 @@ router.post("/", jwtAuth, (req, res) => {
 });
 
 
-router.put('/:id', jwtAuth, jsonParser, (req, res) => {
+router.put("/:id", jwtAuth, jsonParser, (req, res) => {
   const requiredFields = ["description", "note", "amount"];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -70,7 +71,7 @@ router.put('/:id', jwtAuth, jsonParser, (req, res) => {
 
 //DELETE EXPENSE
 
-router.delete('/:id', jwtAuth, (req, res) => {
+router.delete("/:id", jwtAuth, jsonParser, (req, res) => {
   return Expense
     .findByIdAndRemove(req.params.id)
     .then(() => res.status(204).end())
