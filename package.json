@@ -1,18 +1,19 @@
 {
   "name": "betr-business-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Node server for DBB application",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "mocha --exit"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ricardo Zavala",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.0",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.5",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "jsonwebtoken": "^8.2.0",
