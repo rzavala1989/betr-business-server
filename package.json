@@ -1,8 +1,8 @@
 {
   "name": "betr-business-server",
   "version": "1.0.0",
-  "description": "Node server for DBB application",
-  "main": "server.js",
+  "description": "DBB API",
+  "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "test": "mocha --exit"
