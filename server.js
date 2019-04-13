@@ -19,7 +19,7 @@ const { router: expenseRouter} = require('./expenses');
 
 mongoose.Promise = global.Promise;
 
-const { PORT, DATABASE_URL } = require('./config');
+const { PORT, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
 
 const app = express();
 
