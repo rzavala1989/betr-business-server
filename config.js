@@ -1,7 +1,7 @@
 "use strict";
 exports.DATABASE_URL =
   process.env.DATABASE_URL ||
-  "mongodb+srv://rzavala1989:illmatic774@do-betr-business.1nfsu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority" ||
+  "mongodb+srv://rzavala1989:illmatic774@do-betr-business.1nfsu.mongodb.net/do-betr-business" ||
   "mongodb://localhost/do-betr-business";
 exports.TEST_DATABASE_URL =
   process.env.TEST_DATABASE_URL || "mongodb://localhost/do-betr-business-test";

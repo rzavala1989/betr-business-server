@@ -1,10 +1,10 @@
-'use strict';
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const passport = require('passport');
-const cors = require('cors');
+"use strict";
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const passport = require("passport");
+const cors = require("cors");
 
 // Here we use destructuring assignment with renaming so the two variables
 // called router (from ./users and ./auth) have different names
@@ -13,44 +13,44 @@ const cors = require('cors');
 // const { james: jimmy, robert: bobby } = actorSurnames;
 // console.log(jimmy); // Stewart - the variable name is jimmy, not james
 // console.log(bobby); // De Niro - the variable name is bobby, not robert
-const { router: usersRouter } = require('./users');
-const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
-const { router: expenseRouter} = require('./expenses');
+const { router: usersRouter } = require("./users");
+const { router: authRouter, localStrategy, jwtStrategy } = require("./auth");
+const { router: expenseRouter } = require("./expenses");
 
 mongoose.Promise = global.Promise;
 
-const { PORT, DATABASE_URL, CLIENT_ORIGIN } = require('./config');
+const { PORT, DATABASE_URL, CLIENT_ORIGIN } = require("./config");
 
 const app = express();
 
 // Logging
-app.use(morgan('common'));
+app.use(morgan("common"));
 
 // CORS
 app.use(
   cors({
-    origin: CLIENT_ORIGIN
+    origin: CLIENT_ORIGIN,
   })
 );
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/api/users/', usersRouter);
-app.use('/api/auth/', authRouter);
-app.use('/api/expenses/', expenseRouter);
+app.use("/api/users/", usersRouter);
+app.use("/api/auth/", authRouter);
+app.use("/api/expenses/", expenseRouter);
 
-const jwtAuth = passport.authenticate('jwt', { session: false });
+const jwtAuth = passport.authenticate("jwt", { session: false });
 
 // A protected endpoint which needs a valid JWT to access it
-app.get('/api/protected', jwtAuth, (req, res) => {
+app.get("/api/protected", jwtAuth, (req, res) => {
   return res.json({
-    data: 'rosebud'
+    data: "rosebud",
   });
 });
 
-app.use('*', (req, res) => {
-  return res.status(404).json({ message: 'Not Found' });
+app.use("*", (req, res) => {
+  return res.status(404).json({ message: "Not Found" });
 });
 
 // Referenced by both runServer and closeServer. closeServer
@@ -58,29 +58,36 @@ app.use('*', (req, res) => {
 let server;
 
 function runServer(databaseUrl, port = PORT) {
-
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl, err => {
-      if (err) {
-        return reject(err);
+    mongoose.connect(
+      databaseUrl,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+      (err) => {
+        if (err) {
+          return reject(err);
+        }
+        server = app
+          .listen(port, () => {
+            console.log(`Your app is listening on port ${port}`);
+            resolve();
+          })
+          .on("error", (err) => {
+            mongoose.disconnect();
+            reject(err);
+          });
       }
-      server = app.listen(port, () => {
-        console.log(`Your app is listening on port ${port}`);
-        resolve();
-      })
-        .on('error', err => {
-          mongoose.disconnect();
-          reject(err);
-        });
-    });
+    );
   });
 }
 
 function closeServer() {
   return mongoose.disconnect().then(() => {
     return new Promise((resolve, reject) => {
-      console.log('Closing server');
-      server.close(err => {
+      console.log("Closing server");
+      server.close((err) => {
         if (err) {
           return reject(err);
         }
@@ -91,7 +98,7 @@ function closeServer() {
 }
 
 if (require.main === module) {
-  runServer(DATABASE_URL).catch(err => console.error(err));
+  runServer(DATABASE_URL).catch((err) => console.error(err));
 }
 
 module.exports = { app, runServer, closeServer };
